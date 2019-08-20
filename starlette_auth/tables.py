@@ -4,18 +4,19 @@ import os
 
 import sqlalchemy as sa
 from sqlalchemy import orm
-from sqlalchemy_utils import EmailType
+from sqlalchemy_utils import EmailType, UUIDType
 from starlette_core.database import Base
 
 user_scopes = sa.Table(
     "userscope",
     Base.metadata,
-    sa.Column("user_id", sa.Integer, sa.ForeignKey("user.id")),
-    sa.Column("scope_id", sa.Integer, sa.ForeignKey("scope.id")),
+    sa.Column("user_id", UUIDType, sa.ForeignKey("user.id")),
+    sa.Column("scope_id", UUIDType, sa.ForeignKey("scope.id")),
 )
 
 
 class User(Base):
+    id = sa.Column(UUIDType(binary=False), primary_key=True)
     email = sa.Column(EmailType, nullable=False, index=True, unique=True)
     password = sa.Column(sa.String(255))
     first_name = sa.Column(sa.String(120))
@@ -53,6 +54,7 @@ class User(Base):
 
 
 class Scope(Base):
+    id = sa.Column(UUIDType(binary=False), primary_key=True)
     code = sa.Column(sa.String(50), nullable=False, unique=True)
     description = sa.Column(sa.Text)
 
