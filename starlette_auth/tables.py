@@ -1,6 +1,7 @@
 import binascii
 import hashlib
 import os
+import uuid
 
 import sqlalchemy as sa
 from sqlalchemy import orm
@@ -16,7 +17,7 @@ user_scopes = sa.Table(
 
 
 class User(Base):
-    id = sa.Column(UUIDType(binary=False), primary_key=True)
+    id = sa.Column(UUIDType(binary=False), primary_key=True, default=uuid.uuid4())
     email = sa.Column(EmailType, nullable=False, index=True, unique=True)
     password = sa.Column(sa.String(255))
     first_name = sa.Column(sa.String(120))
@@ -54,7 +55,7 @@ class User(Base):
 
 
 class Scope(Base):
-    id = sa.Column(UUIDType(binary=False), primary_key=True)
+    id = sa.Column(UUIDType(binary=False), primary_key=True, default=uuid.uuid4())
     code = sa.Column(sa.String(50), nullable=False, unique=True)
     description = sa.Column(sa.Text)
 
