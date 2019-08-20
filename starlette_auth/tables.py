@@ -4,21 +4,24 @@ import os
 import uuid
 
 import sqlalchemy as sa
+from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy import orm
-from sqlalchemy_utils import EmailType, UUIDType
+from sqlalchemy_utils import EmailType
 from starlette_core.database import Base
+
+
 
 user_scopes = sa.Table(
     "userscope",
     Base.metadata,
-    sa.Column("id", UUIDType(binary=False), primary_key=True, default=uuid.uuid4, index=True),
-    sa.Column("user_id", UUIDType, sa.ForeignKey("user.id")),
-    sa.Column("scope_id", UUIDType, sa.ForeignKey("scope.id")),
+    sa.Column("id", UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True),
+    sa.Column("user_id", UUID(as_uuid=True), sa.ForeignKey("user.id")),
+    sa.Column("scope_id", UUID(as_uuid=True), sa.ForeignKey("scope.id")),
 )
 
 
 class User(Base):
-    id = sa.Column(UUIDType(binary=False), primary_key=True, default=uuid.uuid4, index=True)
+    id = sa.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
     email = sa.Column(EmailType, nullable=False, index=True, unique=True)
     password = sa.Column(sa.String(255))
     first_name = sa.Column(sa.String(120))
@@ -56,7 +59,7 @@ class User(Base):
 
 
 class Scope(Base):
-    id = sa.Column(UUIDType(binary=False), primary_key=True, default=uuid.uuid4, index=True)
+    id = sa.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
     code = sa.Column(sa.String(50), nullable=False, unique=True)
     description = sa.Column(sa.Text)
 
