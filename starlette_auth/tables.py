@@ -11,6 +11,7 @@ from starlette_core.database import Base
 user_scopes = sa.Table(
     "userscope",
     Base.metadata,
+    sa.Column("id", UUIDType(binary=False), primary_key=True, default=uuid.uuid4()),
     sa.Column("user_id", UUIDType, sa.ForeignKey("user.id")),
     sa.Column("scope_id", UUIDType, sa.ForeignKey("scope.id")),
 )
